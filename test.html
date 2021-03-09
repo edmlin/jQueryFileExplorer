@@ -1,0 +1,140 @@
+<!doctype html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type='text/javascript' src='jQueryFileExplorer.js'></script>
+<script type='text/javascript' src='split.js'></script>
+<link rel='stylesheet' href='jQueryFileExplorer.css' type='text/css'/>
+<script>
+$(function(){
+	$("#fileexplorer1").jQueryFileExplorer({
+		root: "/", 
+		rootLabel:"Server",
+		script: getPath,
+		fileScript: function(file){window.open("https://localhost:44316/FileExplorer/GetPath?path="+file.path);}
+	});
+	$("#fileexplorer2").jQueryFileExplorer({
+		root: "/", 
+		rootLabel:"Server",
+		script: "https://localhost:44316/FileExplorer/GetPath",
+		fileScript: "https://localhost:44316/FileExplorer/GetPath"
+	});
+
+});
+
+function getPath(data)
+{
+	if(data.path=='/')
+	{
+		return [
+			{
+				label: 'C:',
+				path: 'C:',
+				isDrive: true,
+				isFolder: true,
+				hasSubfolder: true,
+				subitems:['Total: 300,000', 'Free: 100,000']
+			},
+			{
+				label: 'D:',
+				path: 'D:',
+				isDrive: true,
+				isFolder: true,
+				hasSubfolder: true,
+				subitems:['Total: 100,000', 'Free: 80,000']
+			}
+		];
+	}
+	else if(data.path=='C:')
+	{
+		return [
+			{
+				label: 'Windows', 
+				path: 'C:/Windows',
+				hasSubfolder: true,
+				isFolder: true,
+				subitems:['1/2/2021']
+			},
+			{
+				label: 'Temp',
+				path: 'C:/Temp',
+				hasSubfolder: true,
+				isFolder: true,
+				lastModified: '1/1/2021'
+			},
+			{
+				label: 'FolderWithoutSubfolder',
+				path: 'C:/FolderWithoutSubfolder',
+				hasSubfolder: false,
+				isFolder: true,
+				subitems: ['1/3/2021']
+			},
+			{
+				label: 'File1',
+				path: 'C:/File1.pdf',
+				isFolder: false,
+				ext: 'pdf',
+				subitems: ['2/2/2021', '123,433']
+			}
+		];
+	}
+	else if(data.path.endsWith("/FolderWithoutSubfolder"))
+	{
+		return [
+			{
+				label: 'file1.pdf',
+				path: data.path+"/file1.pdf",
+				ext: 'pdf',
+				isFolder: false,
+				subitems: ['2/2/2021', '123,234']
+			},
+			{
+				label: 'file2.jpg',
+				path: data.path+"/file2.jpg",
+				ext: 'jpg',
+				isFolder: false,
+				subitems: ['2/2/2021', '123,234']
+			}
+		];
+	}
+	else
+	{
+		return [
+			{
+				label: 'FolderWithSubfolder',
+				path: data.path+"/FolderWithSubfolder",
+				hasSubfolder: true,
+				isFolder: true,
+				subitems: ['1/1/2021']
+			},
+			{
+				label: 'FolderWithoutSubfolder',
+				path: data.path+"/FolderWithoutSubfolder",
+				hasSubfolder: false,
+				isFolder: true,
+				subitems: ['1/1/2021']
+			},
+			{
+				label: 'file1.pdf',
+				path: data.path+"/file1.pdf",
+				ext: 'pdf',
+				isFolder: false,
+				subitems: ['2/2/2021', '123,234']
+			},
+			{
+				label: 'file2.jpg',
+				path: data.path+"/file2.jpg",
+				ext: 'jpg',
+				isFolder: false,
+				subitems: ['2/2/2021','123,234']
+			}
+		];
+	}
+}
+</script>
+</head>
+<html>
+<body>
+<div style='border: 1px solid silver; width: 100%; height: 300px;' id='fileexplorer1'></div>
+<div style='border: 1px solid silver; width: 100%; height: 300px;' id='fileexplorer2'></div>
+</body>
+</html>
