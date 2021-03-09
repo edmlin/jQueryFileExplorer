@@ -1,5 +1,5 @@
 # jQueryFileExplorer
-Inspired by [jQueryFiletree](https://github.com/jqueryfiletree/jqueryfiletree). Most of the icons in the images folder are from [jQueryFiletree](https://github.com/jqueryfiletree/jqueryfiletree/tree/master/dist/images).
+Inspired by [jQueryFiletree](https://github.com/jqueryfiletree/jqueryfiletree). Most of the icons in the images folder are from [jQueryFiletree](https://github.com/jqueryfiletree/jqueryfiletree/tree/master/dist/images).  
 [Split.js](https://split.js.org/) is included and used to provide split function. It can be excluded if panel resize is not required.
 ## Usage
 ```
