@@ -14,10 +14,10 @@ $(selector).jQueryFileExplorer({
 - root: the path of the root passed to the backend url or function
 - rootLabel: the label of the root shown in the file explorer
 - script: the URL or a function that returns the content of a folder.
-- fileScript: a function or a URL to download the file when a file is clicked
+- fileScript: a function or a download URL triggered when a file is clicked.
 ### Note:
 - If the script/fileScript is a function, an object parameter {path: 'path'} is passed to the function. If the script/fileScript is a URL, a parameter 'path' with the path of the clicked folder/file is passed to the URL via POST(for folders) or GET(for files).
-- The content of a folder received from the URL or function should be an **array** of objects like this:
+- The content of a folder returned from the URL or function should be an **array** of objects like this:
 ```
 [
 	{
