@@ -251,12 +251,13 @@
                 $("<span>").addClass('foldertree-error').text("Failed to get folder content.").appendTo(contentElem);
                 return;
 			}
-			var children=$this.subfolders.concat($this.files);
+            var children=$this.subfolders.concat($this.files);
+            var sections=[];
+            sections[0]=$("<span>").addClass("foldercontent-section").addClass("foldercontent-section-0");
 			$.each(children,function(index,child){
-                var item = $("<div>").addClass("foldercontent-item");
                 var icon = $("<span class='foldercontent-icon'>");
                 icon.addClass(child.isDrive ? "drive-icon" : (child.isFolder ? "foldertree-icon-collapsed" : "file-icon ext-" + child.ext));
-                var label = $("<span class='foldercontent-label'>").text(child.label);
+                var label = $("<span class='foldercontent-label foldercontent-subitem'>").append(icon).append(child.label);
                 label.data("data", child);
                 label.off("click").on("click", function (e) {
 					var data=$(e.target).data('data');
@@ -279,16 +280,39 @@
 	
 					}
                 });
-				item.append(icon).append(label);
+				sections[0].append(label);
 				if(child.subitems)
 				{
-					$.each(child.subitems,function(index,text){
-						var subitem=$("<span>").addClass("foldercontent-subitem").addClass("foldercontent-subitem-"+index).text(text);
-						item.append(subitem);
+					$.each(child.subitems,function(s_index,text){
+                        if(sections[s_index+1]==undefined)
+                        {
+                            sections[s_index+1]=$("<span>").addClass("foldercontent-section").addClass("foldercontent-section-"+(s_index+1));
+                            for(var i=0;i<index;i++)
+                            {
+                                sections[s_index+1].append($("<span>").addClass("foldercontent-subitem"));
+                            }
+                        }
+						var subitem=$("<span>").addClass("foldercontent-subitem").text(text);
+						sections[s_index+1].append(subitem);
 					})
 				}
+            });
+            var sectionElements=[];
+            $.each(sections,function(index,item){
                 contentElem.append(item);
-			});
+                sectionElements[index]=item[0];
+            });
+            if(typeof Split=="function")
+            {
+                var sizes = contentElem.data('split-sizes');
+                Split(sectionElements,{
+                    sizes: sizes,
+                    gutterSize: 2,
+                    onDragEnd: function(sizes) {
+                        contentElem.data('split-sizes', sizes);
+                    },
+                });
+            }
         });
     }
     FileExplorer = function (options) {
@@ -319,6 +343,22 @@
             rootLabel: options.rootLabel || "/"
         });
         tree.Show();
+        foldercontent.on("mouseenter",".foldercontent-subitem",
+            function(e){
+                foldercontent.find(".foldercontent-subitem.hover").removeClass("hover");
+                var elem=$(e.target);
+                if(!elem.hasClass("foldercontent-subitem")) elem=elem.closest(".foldercontent-subitem");
+                var index=elem.index();
+                for(var i=0;i<foldercontent.find(".foldercontent-section").length;i++)
+                {
+                    foldercontent.find(".foldercontent-section").eq(i).find(".foldercontent-subitem").eq(index).addClass("hover");
+                }
+            });
+        foldercontent.on("mouseleave",".foldercontent-subitem",
+            function(e){
+                $(".foldercontent-subitem.hover").removeClass("hover");
+            }
+        );
     }
     $.fn.extend({
         jQueryFileExplorer: function (options) {

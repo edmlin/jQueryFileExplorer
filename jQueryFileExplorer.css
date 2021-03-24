@@ -36,6 +36,8 @@
   flex-grow: 1;
   border-left: 0px solid #eee;
   padding-left: 5px;
+  display: flex;
+  flex-direction: row;
 }
 
 .foldertree-expander
@@ -119,7 +121,7 @@
 {
   width: 100%;
 }
-.foldercontent-item, .folder-crumb
+.foldercontent-item, .folder-crumb, .foldercontent-subitem
 {
   line-height:18px;
 	height:18px;
@@ -139,15 +141,13 @@
 {
   padding: 0 2px;
 }
-.foldercontent-item:hover
+.foldercontent-subitem.hover
 {
   background-color: #BDF;
 }
 
 .foldercontent-label
 {
-  min-width: 250px;
-  width: 50%;
   white-space: nowrap;
   float: left;
   vertical-align: top;
@@ -155,24 +155,17 @@
   overflow: hidden;
   text-overflow:ellipsis;
 }
-.foldercontent-subitem-0
+.foldercontent-section
 {
-  vertical-align: top;
-  width:150px;
-  float: left;
-  padding-left: 5px;
-  border-left: #eee solid 1px;
-  border-right: #eee solid 1px;
-  overflow: hidden;
-  text-overflow:ellipsis;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  font-family: Verdana, sans-serif;
+  font-size:11px;
 }
-.foldercontent-subitem-1
+.foldercontent-section-0
 {
-  display: block;
-  padding-right: 5px;
-  overflow: hidden;
-  text-overflow:ellipsis;
-  text-align: right;
+  width: 50%;
 }
 .foldercontent-icon
 {
@@ -204,6 +197,7 @@
 }
 .gutter.gutter-horizontal {
   cursor: col-resize;
+  border-left:1px solid #eee;
 }
 .file-icon.ext-3gp {
   background: url(images/film.png) left top no-repeat;
